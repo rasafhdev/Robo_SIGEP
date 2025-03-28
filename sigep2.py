@@ -27,7 +27,9 @@ class Sigep:
         chrome_options = Options()
         chrome_options.add_argument("--disable-gpu")
         chrome_options.add_argument("--disable-popup-blocking")
-        chrome_options.add_argument("--enable-features=CookiesWithoutSameSiteMustBeSecure")
+        chrome_options.add_argument(
+            "--enable-features=CookiesWithoutSameSiteMustBeSecure"
+        )
 
         service = Service(ChromeDriverManager().install())
         self.driver = webdriver.Chrome(service=service, options=chrome_options)
@@ -41,23 +43,33 @@ class Sigep:
         """Seleciona o órgão desejado e clica no botão OK."""
         wait = WebDriverWait(self.driver, 10)
 
-        # Clicar no mat-select para abrir as opções
-        select_element = wait.until(EC.element_to_be_clickable((By.ID, "formTribunal_nome")))
-        select_element.click()
+        # Clicar no formulario de seleção do órgão para abrir as opções
+        selecionar_elemento = wait.until(
+            EC.element_to_be_clickable((By.ID, "formTribunal_nome"))
+        )
+        selecionar_elemento.click()
         time.sleep(1)
 
         # Selecionar a opção desejada pelo texto visível
-        opcao_desejada = wait.until(EC.element_to_be_clickable((By.XPATH, f"//span[contains(text(), '{orgao_nome}')]")))
+        opcao_desejada = wait.until(
+            EC.element_to_be_clickable(
+                (By.XPATH,f"//span[contains(text(), '{orgao_nome}')]")
+            )
+        )
         opcao_desejada.click()
         time.sleep(1)
 
         # Aguardar ativação e clicar no botão "OK"
-        btn_ok = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, "btn-ok")))
+        btn_ok = wait.until(
+            EC.element_to_be_clickable((By.CLASS_NAME, "btn-ok"))
+        )
         btn_ok.click()
 
-        # Clicar no botão de login
-        btn_aposentados_e_pensionistas = wait.until(EC.element_to_be_clickable((By.ID, "social-keycloak-oidc")))
-        btn_aposentados_e_pensionistas.click()
+        # Clicar no botão de acesso
+        btn_especial = wait.until(
+            EC.element_to_be_clickable((By.ID, "social-keycloak-oidc"))
+        )
+        btn_especial.click()
 
         # Preencher credenciais
         username_sigep = self.driver.find_element(By.ID, "username")
@@ -110,8 +122,8 @@ class Sigep:
         wait = WebDriverWait(self.driver, 10)
         
         autoatendimento_element = wait.until(EC.element_to_be_clickable((
-            By.XPATH, "//h1[contains(text(), 'Autoatendimento')]"
-        )))
+            By.XPATH, "//h1[contains(text(), 'Autoatendimento')]"))
+        )
         
         autoatendimento_element.find_element(By.XPATH, "./ancestor::app-painel-item").click()
         print("Autoatendimento selecionado!")
@@ -137,16 +149,14 @@ if __name__ == "__main__":
         PASSWORD_SIGEP=os.getenv("PASSWORD_SIGEP", ""),
         URL_SIGEP=os.getenv("URL_SIGEP", ""),
         EMAIL=os.getenv("EMAIL", ""),
-        EMAIL_PASSWORD=os.getenv("EMAIL_PASSWORD", ""),
+        EMAIL_PASSWORD=os.getenv("EMAIL_PASSWORD_APP", ""),
         IMAP_SERVER=os.getenv("IMAP_SERVER", "")
     )
 
     sigep.login()
     time.sleep(1)
-    sigep.selecionar_orgao("Tribunal Regional do Trabalho da 1ª Região")
+    sigep.selecionar_orgao(os.getenv('ORGAO'))
     time.sleep(1)
     sigep.selecionar_sistema("Sistema Integrado de Gestão de Pessoas da Justiça do Trabalho")
     time.sleep(1)
     input('')
-    # sigep.selecionar_autoatendimento()
-    # sigep.selecionar_consulta_informacoes_funcionais()

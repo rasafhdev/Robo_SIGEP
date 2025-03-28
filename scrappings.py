@@ -119,7 +119,7 @@ if __name__ == "__main__":
 
     email_account = ScrappingGmail(
         EMAIL=os.getenv("EMAIL", ''),
-        EMAIL_PASSWORD=os.getenv("EMAIL_PASSWORD", ''),
+        EMAIL_PASSWORD=os.getenv("EMAIL_PASSWORD_APP", ''),
         IMAP_SERVER=os.getenv("IMAP_SERVER", '')
     )
 

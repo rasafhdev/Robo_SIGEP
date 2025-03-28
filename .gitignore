@@ -1,0 +1,37 @@
+# Arquivos de log
+logs/
+*.log
+
+# Ambientes virtuais
+venv/
+.env
+
+# Arquivos temporários do sistema
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Arquivos do Jupyter Notebook
+.ipynb_checkpoints/
+
+# Configurações do editor
+.vscode/
+.idea/
+
+# Arquivos de cache
+.cache/
+*.sqlite3
+
+# Planilhas e arquivos gerados
+*.xlsx
+*.csv
+
+# Dependências instaladas via pip
+pip-log.txt
+
+
+# Venvs
+*.venv
+*venv
+venv

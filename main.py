@@ -1,4 +1,4 @@
-from sigep3 import Sigep
+from sigep import Sigep
 import os
 import dotenv
 from time import sleep
@@ -18,7 +18,7 @@ if __name__ == '__main__':
         Código do usuário. Apesar de numérico, deve ser tratado como string.
 
     PASSWORD_SIGEP : str | None
-        Senha real do usuário.
+        Senha real do usuário. Infelizmente ou felizmente, é isso.
 
     URL_SIGEP : str | None
         URL principal do sistema.
@@ -35,9 +35,8 @@ if __name__ == '__main__':
     """
 
     app._setup_driver() # Faz a configuração do navegador
-    sleep(.30)
-    app.acessar_orgao_desejado(nome_do_orgao=os.getenv('ORGAO')) # Loga conforme órgao
+    app.acessar_orgao_desejado(nome_do_orgao=os.getenv('ORGAO')) # Loga conforme órgão
     app.logar_no_sistema() # faz login no sistema
-    sleep(1)
     app.consultar_informacoes_financeiras()
+    app.imprimir_e_salvar_arquivo()
 

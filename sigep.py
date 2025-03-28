@@ -11,6 +11,10 @@ from dataclasses import dataclass
 import dotenv
 import os
 from time import sleep
+import pyautogui as pg
+from datetime import datetime
+import shutil
+
 
 dotenv.load_dotenv()
 
@@ -38,7 +42,6 @@ class Sigep:
 
 
     def acessar_orgao_desejado(self, nome_do_orgao):
-       
         # Abrir pagina principal
         if not self.URL_SIGEP:
             raise ValueError("Necessário inserir a URL do Sistema")
@@ -66,6 +69,7 @@ class Sigep:
 
 
     def logar_no_sistema(self):
+        sleep(3)
         # Verificação de credenciais
         if not all([self.USERNAME_SIGEP, self.PASSWORD_SIGEP]):
             raise ValueError('Credenciais de login não fornecidas')
@@ -115,56 +119,39 @@ class Sigep:
 
     
     def consultar_informacoes_financeiras(self):
-
+        sleep(6)
         # Recebe a URL de consulta
         self.driver.get(os.getenv('URL_CONSULTA'))
 
-
         # Baixar o arquivo
-        btn_imprimir = self.driver.find_element(By.ID, 'botaoSalvarImprimir')
+        btn_imprimir = self.wait.until(
+            EC.element_to_be_clickable((By.ID, "botaoSalvarImprimir"))
+        )
         btn_imprimir.click()
-
-        input('Pressione Enter para finalizar...')
-
-    def salvar_arquivo(self, ): ...
-
-        # Mantém a sessão aberta para testes
-
 
         
 
+    def imprimir_e_salvar_arquivo(self, ):
+        usuario = os.getlogin()
+        mes = datetime.now().month
+        ano = datetime.now().year
+        arquivo  = f'contracheque_{ano}-0{mes}_Folha Normal.pdf'
+        
+        sleep(2)
+        # pg.hotkey('ctrl', 'p') # para imprimir
+        # sleep(0.30)
+        # pg.press('enter')
+        # pg.hotkey('alt', 'f4')
+        # pg.hotkey('alt', 'f4')
+        
+        if os.name == 'nt':
+            origem = f'c:\\Users\\{usuario}\\Downloads\\{arquivo}'
+            destino = f'c:\\Users\\{usuario}\\Desktop\\CONTRACHEQUES\\'
+        else:
+            origem = f'home/{usuario}/Downloads'
+            destino = f'home/{usuario}/Desktop/{arquivo}'
 
-  
-if __name__ == '__main__':
-    app = Sigep()
+        shutil.move(origem, destino)
 
-    """
-    Atributos:
-        Todos os valores podem ser capturados dinamicamente, ou, se None, são
-        capturados pelo arquivo .env.
-    ----------
-
-    USERNAME_SIGEP : str | None
-        Código do usuário. Apesar de numérico, deve ser tratado como string.
-
-    PASSWORD_SIGEP : str | None
-        Senha real do usuário.
-
-    URL_SIGEP : str | None
-        URL principal do sistema.
-
-    EMAIL : str | None
-        Email cadastrado que recebe o código MFA.
-
-    EMAIL_PASSWORD_APP : str | None
-        Senha de aplicativo! É a senha de API configurada no email do usuário,
-        que recebe o código MFA. Essa senha não é a senha do email.
-
-    IMAP_SERVER : str | None
-        Configuração do servidor do provedor de email (ex.: Gmail, Outlook, UOL).
-    """
-
-    app._setup_driver() # Faz a configuração do navegador
-    sleep(.30)
-    app.acessar_orgao_desejado(nome_do_orgao=os.getenv('ORGAO')) # Loga conforme órgao
-    app.logar_no_sistema()
+        #input('Pressione Enter para finalizar...')
+        

@@ -1,5 +1,5 @@
-from scrappings import ScrappingGmail 
-import time
+# Instalados
+from scrapper import ScrappingGmail 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
@@ -7,15 +7,18 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
-from dataclasses import dataclass
-import dotenv
-import os
-from time import sleep
 import pyautogui as pg
-from datetime import datetime
+import dotenv
 import shutil
 
+# Built-ins
+from dataclasses import dataclass
+import os
+from time import sleep
+from datetime import datetime
 
+
+# Carrega info env
 dotenv.load_dotenv()
 
 @dataclass
@@ -87,7 +90,6 @@ class Sigep:
         password_sigep.send_keys(self.PASSWORD_SIGEP or "")
         password_sigep.submit()
 
-        # Verifica se o campo de MFA aparece com wait explícito
         # Verifica se o campo de MFA aparece
         try:
             mfa_field = self.driver.find_element(By.ID, "code")
@@ -101,7 +103,7 @@ class Sigep:
             )
 
             if _email_account.auth_email():
-                time.sleep(5)
+                sleep(5)
                 _email_account.list_messages(
                     sender=os.getenv("SENDER", ''),
                     subject=os.getenv("SUBJECT", ''),

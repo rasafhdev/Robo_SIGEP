@@ -35,3 +35,8 @@ pip-log.txt
 *.venv
 *venv
 venv
+
+# build
+*.build
+*build
+build

@@ -140,11 +140,11 @@ class Sigep:
         arquivo  = f'contracheque_{ano}-0{mes}_Folha Normal.pdf'
         
         sleep(2)
-        # pg.hotkey('ctrl', 'p') # para imprimir
-        # sleep(0.30)
-        # pg.press('enter')
-        # pg.hotkey('alt', 'f4')
-        # pg.hotkey('alt', 'f4')
+        pg.hotkey('ctrl', 'p') # para imprimir
+        sleep(0.30)
+        pg.press('enter')
+        pg.hotkey('alt', 'f4')
+        pg.hotkey('alt', 'f4')
         
         if os.name == 'nt':
             origem = f'c:\\Users\\{usuario}\\Downloads\\{arquivo}'

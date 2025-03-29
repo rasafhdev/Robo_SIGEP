@@ -150,8 +150,8 @@ class Sigep:
             origem = f'c:\\Users\\{usuario}\\Downloads\\{arquivo}'
             destino = f'c:\\Users\\{usuario}\\Desktop\\CONTRACHEQUES\\'
         else:
-            origem = f'home/{usuario}/Downloads'
-            destino = f'home/{usuario}/Desktop/{arquivo}'
+            origem = f'home/{usuario}/Downloads/{arquivo}'
+            destino = f'home/{usuario}/Desktop/CONTRACHEQUES'
 
         shutil.move(origem, destino)
 
